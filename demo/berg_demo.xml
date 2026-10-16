@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Worked example: four cards from bergv4.pdf p.431 (printed p.418), hand-encoded
+  from human readings of 400 DPI crops. This file is the *design target* for the
+  automated pipeline — it exercises every structure the encoder must handle:
+
+    r0c2  manuscript letter, tracing mark, uncertain date
+    r1c2  bare "See:" cross-reference, no bibliographic content
+    r3c1  continuation card ("card 2"), body opens mid-sentence
+    r6c2  printed book, two enumerated copies with distinct provenance
+
+  Editorial conventions are declared in <encodingDesc> and every uncertain
+  reading carries @resp so a model reading is never mistaken for a human one.
+-->
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="berg-demo">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Catalog of the Berg Collection: sample cards</title>
+        <respStmt xml:id="vlm">
+          <resp>Automated transcription from card image</resp>
+          <name>Claude (vision model)</name>
+        </respStmt>
+        <respStmt xml:id="human">
+          <resp>Human transcription and review</resp>
+          <name>Project editor</name>
+        </respStmt>
+      </titleStmt>
+      <publicationStmt>
+        <availability status="free">
+          <p>Source scans are public domain (CC0), digitized by Google from the
+          New York Public Library and delivered via HathiTrust.</p>
+        </availability>
+      </publicationStmt>
+      <sourceDesc>
+        <bibl>
+          <title>Catalog of the Berg Collection of English and American
+          Literature, New York Public Library</title>
+          <biblScope unit="volume">4</biblScope>
+          <biblScope unit="page">418</biblScope>
+          <note>PDF page 431. HathiTrust
+          <ident type="handle">hdl.handle.net/2027/nyp.33433076812993</ident></note>
+        </bibl>
+      </sourceDesc>
+    </fileDesc>
+
+    <encodingDesc>
+      <projectDesc>
+        <p>Each catalog card is encoded as a <gi>div</gi> of type "card" holding
+        two parallel views: a <gi>div</gi> of type "transcription" recording what
+        is physically on the card, and a <gi>listBibl</gi> of type "description"
+        recording its bibliographic interpretation. Where the two disagree, the
+        transcription is authoritative.</p>
+      </projectDesc>
+      <editorialDecl>
+        <correction>
+          <p>No silent correction. Readings inferred through ink loss are tagged
+          <gi>unclear</gi> with <att>cert</att> and <att>resp</att>. Text that
+          cannot be read at all is tagged <gi>gap</gi>, never guessed.</p>
+        </correction>
+        <hyphenation eol="hard">
+          <p>Line breaks are recorded with <gi>lb</gi>; original lineation is
+          preserved because it carries the card's visual structure.</p>
+        </hyphenation>
+      </editorialDecl>
+      <charDecl>
+        <glyph xml:id="rod-hole">
+          <glyphName>CARD ROD HOLE</glyphName>
+          <desc>The punched notch at the base of each card, for the catalog
+          drawer rod. Present on every card; not encoded per-card.</desc>
+        </glyph>
+      </charDecl>
+    </encodingDesc>
+
+    <profileDesc>
+      <langUsage><language ident="en">English</language></langUsage>
+    </profileDesc>
+  </teiHeader>
+
+  <!-- Card images and their coordinates on the source page (580 DPI, 5624x8324 px) -->
+  <facsimile xml:id="facs-p431">
+    <surface xml:id="surface-p431" ulx="0" uly="0" lrx="5624" lry="8324">
+      <graphic url="images/page-431.png"/>
+      <zone xml:id="zone-r0c2" ulx="3894" uly="394"  lrx="5528" lry="1424">
+        <graphic url="images/v4-p0431-r0c2.png"/>
+      </zone>
+      <zone xml:id="zone-r1c2" ulx="3894" uly="1424" lrx="5528" lry="2446">
+        <graphic url="images/v4-p0431-r1c2.png"/>
+      </zone>
+      <zone xml:id="zone-r3c1" ulx="2237" uly="3452" lrx="3894" lry="4474">
+        <graphic url="images/v4-p0431-r3c1.png"/>
+      </zone>
+      <zone xml:id="zone-r6c2" ulx="3894" uly="6501" lrx="5528" lry="7507">
+        <graphic url="images/v4-p0431-r6c2.png"/>
+      </zone>
+    </surface>
+  </facsimile>
+
+  <text>
+    <body>
+      <div type="page" n="418" xml:id="v4-p0431">
+        <pb n="418" facs="#surface-p431"/>
+
+        <!-- ================================================================
+             CARD 1 — manuscript letter with tracing and an uncertain date
+             ================================================================ -->
+        <div type="card" xml:id="v4-p0431-r0c2" facs="#zone-r0c2"
+             n="r0c2" corresp="#desc-r0c2">
+          <div type="transcription">
+            <fw type="tracing" place="top-right">
+              <abbr expan="nota bene">n.b.</abbr><lb/>
+              <ref type="added-entry" target="#symons-julian">(Symons, J.)</ref>
+            </fw>
+            <ab type="mainEntry"><persName ref="#winters-yvor">Winters, Yvor</persName></ab>
+            <ab type="body" rend="indent1">
+              <abbr expan="Typed Letter Signed">T. L. S.</abbr> to
+              <persName ref="#symons-julian">Julian Symons</persName>.<lb/>
+              <placeName>Box 155, Los Altos, Calif.</placeName>,<lb/>
+              <date when="1938-11-15">Nov. 15,
+                <unclear reason="ink-bleed" cert="medium" resp="#vlm">1938</unclear></date>.
+              <measure type="extent">1 p.</measure>
+            </ab>
+            <ab type="note">
+              With <abbr expan="Typed Letter">T. L.</abbr> (carbon) reply dated
+              <date when="1938-12-21">Dec. 21,
+                <unclear reason="ink-bleed" cert="medium" resp="#vlm">1938</unclear></date>.<lb/>
+              <measure type="extent">1 p.</measure>
+            </ab>
+          </div>
+
+          <listBibl type="description">
+            <msDesc xml:id="desc-r0c2">
+              <msIdentifier>
+                <institution>New York Public Library</institution>
+                <collection>Henry W. and Albert A. Berg Collection</collection>
+              </msIdentifier>
+              <msContents>
+                <msItem>
+                  <author ref="#winters-yvor">Winters, Yvor</author>
+                  <title type="supplied">Typed letter signed to Julian Symons</title>
+                  <note>Written from Box 155, Los Altos, California.</note>
+                </msItem>
+                <msItem n="enclosure">
+                  <title type="supplied">Typed letter (carbon), reply</title>
+                  <note>Accompanies the letter above.</note>
+                </msItem>
+              </msContents>
+              <physDesc><extent>2 items, 1 p. each</extent></physDesc>
+            </msDesc>
+          </listBibl>
+        </div>
+
+        <!-- ================================================================
+             CARD 2 — pure cross-reference; no item, no holdings
+             ================================================================ -->
+        <div type="card" xml:id="v4-p0431-r1c2" facs="#zone-r1c2" n="r1c2">
+          <div type="transcription">
+            <ab type="mainEntry">
+              <persName>Wintle, E. D.</persName>, <term type="role">pseud.</term>
+              <space quantity="4" unit="chars"/>
+              <ref type="see" target="#kipling-rudyard">See: Kipling, Rudyard.</ref>
+            </ab>
+          </div>
+          <note type="cardFunction">Cross-reference only. Directs the reader from
+          the pseudonym to the authority heading; describes no held item.</note>
+        </div>
+
+        <!-- ================================================================
+             CARD 3 — continuation. Body opens mid-sentence; the preceding card
+             ends "...receipted bills; contemporary" at r2c1.
+             ================================================================ -->
+        <div type="card" xml:id="v4-p0431-r3c1" facs="#zone-r3c1" n="r3c1"
+             prev="#v4-p0431-r2c1">
+          <div type="transcription">
+            <ab type="mainEntry">
+              <persName ref="#winter-william">Winter, Wm.</persName>
+              <space quantity="2" unit="chars"/>Miscellaneous ms. material
+              <fw type="cardNumber" place="top-right">(card 2)</fw>
+            </ab>
+            <ab type="body" rend="indent2">
+              letters mentioning <persName ref="#obrien-fitzjames">O'Brien</persName>
+              and 13 letters<lb/>
+              about O'Brien to <persName ref="#winter-william">William Winter</persName>
+              from various<lb/>
+              correspondents. <measure type="extent">3 folders</measure>.
+            </ab>
+            <ab type="holdings"><abbr type="holdingsCode">B.</abbr></ab>
+          </div>
+          <note type="continuation">Continues the entry begun on the card at
+          r2c1, whose text breaks off at "receipted bills; contemporary".</note>
+        </div>
+
+        <!-- ================================================================
+             CARD 4 — printed book, two copies with distinct provenance
+             ================================================================ -->
+        <div type="card" xml:id="v4-p0431-r6c2" facs="#zone-r6c2"
+             n="r6c2" corresp="#desc-r6c2">
+          <div type="transcription">
+            <fw type="tracing" place="top-right">
+              <abbr>B</abbr><lb/>
+              <ref type="added-entry" target="#byron">(Byron)</ref>
+            </fw>
+            <ab type="mainEntry"><persName ref="#wise-tj">Wise, Thomas James</persName>.</ab>
+            <ab type="body" rend="indent1">
+              A bibliography of the writings of George<lb/>
+              Gordon Noel, baron Byron. London: Printed for<lb/>
+              private circulation only [by the Dunedin press,<lb/>
+              Edinburgh] 1932-33. 2 v. 26cm. 1st ed.
+            </ab>
+            <ab type="note">
+              <measure type="editionSize">150 copies printed.</measure><lb/>
+              Two copies:<lb/>
+              1. Presentation copy, inscribed, from the author<lb/>
+              to <persName ref="#howe-wth">W. T. H. Howe</persName>.<lb/>
+              2. <abbr type="holdingsCode">H.</abbr>
+            </ab>
+          </div>
+
+          <listBibl type="description">
+            <biblStruct xml:id="desc-r6c2">
+              <monogr>
+                <author ref="#wise-tj">Wise, Thomas James</author>
+                <title level="m">A bibliography of the writings of George Gordon
+                Noel, baron Byron</title>
+                <edition>1st ed.</edition>
+                <imprint>
+                  <pubPlace>London</pubPlace>
+                  <publisher>Printed for private circulation only [by the Dunedin
+                  press, Edinburgh]</publisher>
+                  <date from="1932" to="1933">1932-33</date>
+                </imprint>
+                <extent><measure unit="volume" quantity="2">2 v.</measure>
+                  <dimensions unit="cm"><height>26</height></dimensions></extent>
+              </monogr>
+              <note type="editionSize" n="150">150 copies printed.</note>
+              <note type="copies" n="2">
+                <list type="copies">
+                  <item n="1">Presentation copy, inscribed, from the author to
+                    <persName ref="#howe-wth">W. T. H. Howe</persName>.</item>
+                  <item n="2"><abbr type="holdingsCode">H.</abbr></item>
+                </list>
+              </note>
+            </biblStruct>
+          </listBibl>
+        </div>
+
+      </div>
+    </body>
+  </text>
+</TEI>

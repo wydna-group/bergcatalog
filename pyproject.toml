@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bergcat"
+version = "0.1.0"
+description = "Digitizing the Berg Collection card catalog from scanned volumes"
+requires-python = ">=3.11"
+dependencies = [
+    "pymupdf>=1.28",
+    "opencv-python>=4.9",
+    "numpy>=1.26",
+    "pillow>=10.2",
+    "lxml>=5.0",
+    "anthropic>=0.120",
+    "pytesseract>=0.3.10",
+    "rapidfuzz>=3.0",
+    "pydantic>=2.0",
+    "tqdm>=4.67",
+]
+
+# Installing the package (`pip install -e .`) is what makes `python -m bergcat.*`
+# work from the venv without setting PYTHONPATH on every call.
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+bergcat = ["static/*.css", "static/*.js"]

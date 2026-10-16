@@ -1,0 +1,351 @@
+/* Berg Collection catalog cards.
+   The card face reproduces the physical object: buff stock, monospaced
+   typewriter face, hanging indents, the tracing mark in the top-right corner,
+   and the rod notch at the base. Everything else on the page is chrome and
+   stays visually subordinate to it. */
+
+:root {
+  --card-stock: #f4efe2;
+  --card-edge: #cbbfa4;
+  --card-ink: #1a1712;
+  --paper: #fbfaf7;
+  --ink: #23201b;
+  --muted: #6f685c;
+  --rule: #ddd6c7;
+  --accent: #7a5c2e;
+  --flag: #9c4221;
+  --card-w: 46rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-stock: #2b2721;
+    --card-edge: #4a4235;
+    --card-ink: #e8e1d2;
+    --paper: #17150f;
+    --ink: #e5dfd2;
+    --muted: #9c9384;
+    --rule: #3a352b;
+    --accent: #c9a063;
+    --flag: #e08161;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 2rem 1rem 4rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.6 Georgia, "Iowan Old Style", serif;
+}
+
+.site-head {
+  max-width: var(--card-w);
+  margin: 0 auto 2.5rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1.25rem;
+}
+.site-head h1 { font-size: 1.5rem; margin: 0 0 .4rem; font-weight: 600; }
+.source, .legend { color: var(--muted); font-size: .85rem; margin: .3rem 0; }
+.legend { font-size: .78rem; }
+
+main { max-width: var(--card-w); margin: 0 auto; }
+
+/* --- record wrapper --------------------------------------------------- */
+.card-record { margin: 0 0 3rem; }
+
+.card-head {
+  display: flex; align-items: center; gap: .6rem;
+  flex-wrap: wrap; margin-bottom: .5rem;
+}
+.card-id {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .72rem; color: var(--muted); letter-spacing: .02em;
+}
+.badges { display: flex; gap: .35rem; flex-wrap: wrap; }
+.badge {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .06em;
+  padding: .12rem .45rem; border-radius: 2px;
+  border: 1px solid var(--rule); color: var(--muted);
+}
+.badge-unclear { color: var(--flag); border-color: var(--flag); }
+.badge-cont, .badge-xref { color: var(--accent); border-color: var(--accent); }
+
+.card-body { display: grid; gap: 1rem; }
+
+/* --- the card face ---------------------------------------------------- */
+.card {
+  position: relative;
+  background: var(--card-stock);
+  color: var(--card-ink);
+  border: 1px solid var(--card-edge);
+  border-radius: 2px;
+  box-shadow: 0 1px 0 var(--card-edge), 0 2px 6px rgba(0,0,0,.08);
+  padding: 1.6rem 1.8rem 3.2rem;
+  min-height: 15rem;
+  /* Typewriter face: the cards were typed, and monospace is what makes the
+     hanging indents and column alignment read correctly. */
+  font-family: "Courier New", Courier, ui-monospace, monospace;
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.tracing {
+  position: absolute; top: 1.1rem; right: 1.8rem;
+  text-align: right; font-size: .78rem; line-height: 1.35;
+}
+.fw-inline { float: right; margin-left: 1rem; }
+
+/* Lineation comes from <lb/> -> <br class="lb">. Do NOT use pre-wrap: the XML's
+   own pretty-print indentation would then render as literal leading space.
+
+   The card face REFLOWS by default — hiding the breaks reads better on screen
+   and at other widths. The TEI keeps every <lb/> regardless; this is purely a
+   display choice, toggled per card. */
+.card br.lb { display: none; }
+.card-record.lineated .card br.lb { display: inline; }
+
+.ab { margin: 0 0 .95rem; }
+.ab-mainEntry { margin-bottom: 1.1rem; }
+.ab-holdings { margin-top: 1.2rem; }
+/* The body block hangs: first line indented, continuations flush to the block.
+   This is how the cards were typed. */
+.indent1 { padding-left: 2ch; text-indent: 2ch; }
+.indent2 { padding-left: 4ch; }
+.ab-note { margin-top: 1.2rem; }
+
+/* The punched notch at the base of every drawer card. */
+.rod-hole {
+  position: absolute; bottom: .7rem; left: 50%;
+  transform: translateX(-50%);
+  width: 2.1rem; height: 1.05rem;
+  border: 1.5px solid var(--card-edge);
+  border-top: none;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
+/* --- inline semantics ------------------------------------------------- */
+/* Uncertainty must stay visible. A reading the model guessed at should never
+   look like one a human confirmed. */
+.unclear {
+  border-bottom: 1px dotted var(--flag);
+  cursor: help;
+  background: color-mix(in srgb, var(--flag) 8%, transparent);
+}
+.unclear[data-cert="low"] { border-bottom-style: dashed; font-style: italic; }
+.gap { color: var(--flag); cursor: help; }
+
+abbr { text-decoration: none; border-bottom: 1px dotted var(--muted); cursor: help; }
+abbr.code { border-bottom: none; font-weight: 700; }
+.hi-underline { text-decoration: underline; }
+.hi-strikethrough { text-decoration: line-through; }
+
+.ref { color: inherit; text-decoration: none; border-bottom: 1px solid var(--accent); }
+.ref-see { font-weight: 700; }
+.ref-added-entry { border-bottom: none; }
+.persName, .placeName, .date, .measure, .term { color: inherit; }
+
+/* --- facsimile pane --------------------------------------------------- */
+.facs-pane { position: relative; }
+.card-facs {
+  width: 100%; height: auto; display: block;
+  border: 1px solid var(--rule); border-radius: 2px;
+  background: #fff;
+}
+.pane-label, .no-facs {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--muted); margin-top: .35rem;
+}
+.no-facs {
+  border: 1px dashed var(--rule); padding: 2rem; text-align: center;
+  margin-top: 0;
+}
+
+/* Side-by-side once there's room for the card to keep its measure. */
+@media (min-width: 62rem) {
+  :root { --card-w: 74rem; }
+  .card-body { grid-template-columns: 1fr 1fr; align-items: start; }
+}
+
+/* --- editorial notes and structured description ----------------------- */
+.card-note {
+  margin-top: .7rem; font-size: .8rem; color: var(--muted);
+  border-left: 2px solid var(--rule); padding-left: .7rem;
+}
+.note-label {
+  display: block;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .62rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--accent); margin-bottom: .15rem;
+}
+
+.description { margin-top: 1rem; border-top: 1px solid var(--rule); padding-top: .6rem; }
+.description summary {
+  cursor: pointer; font-size: .74rem; color: var(--muted);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.desc-grid { margin: .8rem 0 0; font-size: .86rem; }
+.desc-row {
+  display: grid; grid-template-columns: 9rem 1fr; gap: .6rem;
+  padding: .35rem 0; border-bottom: 1px solid var(--rule);
+}
+.desc-row:last-child { border-bottom: none; }
+.desc-row dt { color: var(--muted); font-size: .78rem; }
+.desc-row dd { margin: 0; }
+.ms-items { margin: 0; padding-left: 1.1rem; }
+
+@media (max-width: 34rem) {
+  .desc-row { grid-template-columns: 1fr; gap: .1rem; }
+  .card { padding: 1.2rem 1rem 3rem; font-size: .76rem; }
+}
+
+/* --- correction workflow ---------------------------------------------- */
+
+.badge-unverified { color: var(--flag); border-color: var(--flag); }
+.badge-verified {
+  color: #2f6a3f; border-color: #2f6a3f;
+  background: color-mix(in srgb, #2f6a3f 10%, transparent);
+}
+.badge-blank { opacity: .55; }
+.badge-conf { font-variant-numeric: tabular-nums; }
+
+@media (prefers-color-scheme: dark) {
+  .badge-verified { color: #7fc394; border-color: #7fc394; }
+}
+
+/* A verified card is visibly settled: green edge, no hedging. */
+.card-record[data-status="verified"] .card {
+  border-color: #2f6a3f;
+  box-shadow: 0 1px 0 #2f6a3f, 0 2px 6px rgba(0,0,0,.08);
+}
+.card-record[data-blank="true"] .card { opacity: .5; }
+.ab-blank { color: var(--muted); font-style: italic; }
+
+.card-actions, .editor-actions {
+  display: flex; gap: .5rem; align-items: center; flex-wrap: wrap;
+  margin-top: .7rem;
+}
+
+.btn {
+  font: inherit; font-size: .78rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  padding: .35rem .8rem; border-radius: 3px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn-primary { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.btn-quiet { color: var(--muted); }
+
+/* The editor replaces the card face in place, so the eye stays where the
+   work is rather than jumping to a panel elsewhere. */
+.editor-shell { display: none; }
+.card-record.editing .card,
+.card-record.editing .card-actions { display: none; }
+.card-record.editing .editor-shell { display: block; }
+
+.editor-label {
+  display: block;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--accent); margin-bottom: .35rem;
+}
+.tei-editor {
+  width: 100%; min-height: 20rem; resize: vertical;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .74rem; line-height: 1.55;
+  padding: .8rem; border-radius: 2px;
+  border: 1px solid var(--accent);
+  background: var(--card-stock); color: var(--card-ink);
+  tab-size: 2;
+}
+.tei-editor:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.hint { font-size: .7rem; color: var(--muted); }
+
+/* --- progress + toolbar ------------------------------------------------ */
+
+.progress { display: flex; align-items: center; gap: .75rem; margin: .9rem 0 .6rem; }
+.prog-track {
+  flex: 1; height: .45rem; border-radius: 999px;
+  background: var(--rule); overflow: hidden;
+}
+.prog-bar {
+  height: 100%; width: 0; background: var(--accent);
+  transition: width .25s ease;
+}
+.prog-text {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .72rem; color: var(--muted); white-space: nowrap;
+}
+.toolbar { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%) translateY(1rem);
+  background: var(--ink); color: var(--paper);
+  padding: .6rem 1.1rem; border-radius: 4px;
+  font-size: .8rem; opacity: 0; pointer-events: none;
+  transition: opacity .2s, transform .2s; z-index: 50;
+  max-width: 90vw;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.err { background: var(--flag); }
+
+/* The embedded TEI payloads are data, not content. [hidden] alone loses to the
+   .tei-editor display rule, so pin it. */
+textarea[hidden] { display: none !important; }
+
+/* --- search ------------------------------------------------------------ */
+
+.search { margin: 1rem 0 .8rem; }
+.search-row {
+  display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  margin-bottom: .5rem;
+}
+.search-input {
+  flex: 1; min-width: 14rem;
+  font: inherit; font-size: .9rem;
+  padding: .5rem .75rem; border-radius: 3px;
+  border: 1px solid var(--rule);
+  background: var(--paper); color: var(--ink);
+}
+.search-input:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.search-count {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .72rem; color: var(--muted); white-space: nowrap;
+}
+.search-opts {
+  font-size: .78rem; color: var(--muted);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+.opt-group { display: flex; align-items: center; gap: .55rem; }
+.opt-group label { display: flex; align-items: center; gap: .25rem; cursor: pointer; }
+.opt-group input[type="radio"] { margin: 0; }
+#facet {
+  font: inherit; font-size: .78rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  padding: .2rem .4rem; border-radius: 3px;
+  border: 1px solid var(--rule);
+  background: var(--paper); color: var(--ink);
+}
+
+/* Filtering hides in place, so surviving cards keep their filing order. */
+.card-record[hidden] { display: none; }
+
+mark.hit {
+  background: color-mix(in srgb, var(--accent) 38%, transparent);
+  color: inherit; border-radius: 2px; padding: 0 .05em;
+}
+
+.no-hits {
+  color: var(--muted); font-size: .9rem;
+  border: 1px dashed var(--rule); border-radius: 3px;
+  padding: 1.5rem; text-align: center;
+}

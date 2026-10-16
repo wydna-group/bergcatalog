@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Catalog of the Berg Collection: sample cards</title>
+<style>/* Berg Collection catalog cards.
+   The card face reproduces the physical object: buff stock, monospaced
+   typewriter face, hanging indents, the tracing mark in the top-right corner,
+   and the rod notch at the base. Everything else on the page is chrome and
+   stays visually subordinate to it. */
+
+:root {
+  --card-stock: #f4efe2;
+  --card-edge: #cbbfa4;
+  --card-ink: #1a1712;
+  --paper: #fbfaf7;
+  --ink: #23201b;
+  --muted: #6f685c;
+  --rule: #ddd6c7;
+  --accent: #7a5c2e;
+  --flag: #9c4221;
+  --card-w: 46rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-stock: #2b2721;
+    --card-edge: #4a4235;
+    --card-ink: #e8e1d2;
+    --paper: #17150f;
+    --ink: #e5dfd2;
+    --muted: #9c9384;
+    --rule: #3a352b;
+    --accent: #c9a063;
+    --flag: #e08161;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 2rem 1rem 4rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.6 Georgia, "Iowan Old Style", serif;
+}
+
+.site-head {
+  max-width: var(--card-w);
+  margin: 0 auto 2.5rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1.25rem;
+}
+.site-head h1 { font-size: 1.5rem; margin: 0 0 .4rem; font-weight: 600; }
+.source, .legend { color: var(--muted); font-size: .85rem; margin: .3rem 0; }
+.legend { font-size: .78rem; }
+
+main { max-width: var(--card-w); margin: 0 auto; }
+
+/* --- record wrapper --------------------------------------------------- */
+.card-record { margin: 0 0 3rem; }
+
+.card-head {
+  display: flex; align-items: center; gap: .6rem;
+  flex-wrap: wrap; margin-bottom: .5rem;
+}
+.card-id {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .72rem; color: var(--muted); letter-spacing: .02em;
+}
+.badges { display: flex; gap: .35rem; flex-wrap: wrap; }
+.badge {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .06em;
+  padding: .12rem .45rem; border-radius: 2px;
+  border: 1px solid var(--rule); color: var(--muted);
+}
+.badge-unclear { color: var(--flag); border-color: var(--flag); }
+.badge-cont, .badge-xref { color: var(--accent); border-color: var(--accent); }
+
+.card-body { display: grid; gap: 1rem; }
+
+/* --- the card face ---------------------------------------------------- */
+.card {
+  position: relative;
+  background: var(--card-stock);
+  color: var(--card-ink);
+  border: 1px solid var(--card-edge);
+  border-radius: 2px;
+  box-shadow: 0 1px 0 var(--card-edge), 0 2px 6px rgba(0,0,0,.08);
+  padding: 1.6rem 1.8rem 3.2rem;
+  min-height: 15rem;
+  /* Typewriter face: the cards were typed, and monospace is what makes the
+     hanging indents and column alignment read correctly. */
+  font-family: "Courier New", Courier, ui-monospace, monospace;
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.tracing {
+  position: absolute; top: 1.1rem; right: 1.8rem;
+  text-align: right; font-size: .78rem; line-height: 1.35;
+}
+.fw-inline { float: right; margin-left: 1rem; }
+
+/* Lineation comes from <lb/> -> <br/>. Do NOT use pre-wrap: the XML's own
+   pretty-print indentation would then render as literal leading space. */
+.ab { margin: 0 0 .95rem; }
+.ab-mainEntry { margin-bottom: 1.1rem; }
+.ab-holdings { margin-top: 1.2rem; }
+/* The body block hangs: first line indented, continuations flush to the block.
+   This is how the cards were typed. */
+.indent1 { padding-left: 2ch; text-indent: 2ch; }
+.indent2 { padding-left: 4ch; }
+.ab-note { margin-top: 1.2rem; }
+
+/* The punched notch at the base of every drawer card. */
+.rod-hole {
+  position: absolute; bottom: .7rem; left: 50%;
+  transform: translateX(-50%);
+  width: 2.1rem; height: 1.05rem;
+  border: 1.5px solid var(--card-edge);
+  border-top: none;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
+/* --- inline semantics ------------------------------------------------- */
+/* Uncertainty must stay visible. A reading the model guessed at should never
+   look like one a human confirmed. */
+.unclear {
+  border-bottom: 1px dotted var(--flag);
+  cursor: help;
+  background: color-mix(in srgb, var(--flag) 8%, transparent);
+}
+.unclear[data-cert="low"] { border-bottom-style: dashed; font-style: italic; }
+.gap { color: var(--flag); cursor: help; }
+
+abbr { text-decoration: none; border-bottom: 1px dotted var(--muted); cursor: help; }
+abbr.code { border-bottom: none; font-weight: 700; }
+.hi-underline { text-decoration: underline; }
+.hi-strikethrough { text-decoration: line-through; }
+
+.ref { color: inherit; text-decoration: none; border-bottom: 1px solid var(--accent); }
+.ref-see { font-weight: 700; }
+.ref-added-entry { border-bottom: none; }
+.persName, .placeName, .date, .measure, .term { color: inherit; }
+
+/* --- facsimile pane --------------------------------------------------- */
+.facs-pane { position: relative; }
+.card-facs {
+  width: 100%; height: auto; display: block;
+  border: 1px solid var(--rule); border-radius: 2px;
+  background: #fff;
+}
+.pane-label, .no-facs {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--muted); margin-top: .35rem;
+}
+.no-facs {
+  border: 1px dashed var(--rule); padding: 2rem; text-align: center;
+  margin-top: 0;
+}
+
+/* Side-by-side once there's room for the card to keep its measure. */
+@media (min-width: 62rem) {
+  :root { --card-w: 74rem; }
+  .card-body { grid-template-columns: 1fr 1fr; align-items: start; }
+}
+
+/* --- editorial notes and structured description ----------------------- */
+.card-note {
+  margin-top: .7rem; font-size: .8rem; color: var(--muted);
+  border-left: 2px solid var(--rule); padding-left: .7rem;
+}
+.note-label {
+  display: block;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .62rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--accent); margin-bottom: .15rem;
+}
+
+.description { margin-top: 1rem; border-top: 1px solid var(--rule); padding-top: .6rem; }
+.description summary {
+  cursor: pointer; font-size: .74rem; color: var(--muted);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.desc-grid { margin: .8rem 0 0; font-size: .86rem; }
+.desc-row {
+  display: grid; grid-template-columns: 9rem 1fr; gap: .6rem;
+  padding: .35rem 0; border-bottom: 1px solid var(--rule);
+}
+.desc-row:last-child { border-bottom: none; }
+.desc-row dt { color: var(--muted); font-size: .78rem; }
+.desc-row dd { margin: 0; }
+.ms-items { margin: 0; padding-left: 1.1rem; }
+
+@media (max-width: 34rem) {
+  .desc-row { grid-template-columns: 1fr; gap: .1rem; }
+  .card { padding: 1.2rem 1rem 3rem; font-size: .76rem; }
+}
+
+/* --- correction workflow ---------------------------------------------- */
+
+.badge-unverified { color: var(--flag); border-color: var(--flag); }
+.badge-verified {
+  color: #2f6a3f; border-color: #2f6a3f;
+  background: color-mix(in srgb, #2f6a3f 10%, transparent);
+}
+.badge-blank { opacity: .55; }
+.badge-conf { font-variant-numeric: tabular-nums; }
+
+@media (prefers-color-scheme: dark) {
+  .badge-verified { color: #7fc394; border-color: #7fc394; }
+}
+
+/* A verified card is visibly settled: green edge, no hedging. */
+.card-record[data-status="verified"] .card {
+  border-color: #2f6a3f;
+  box-shadow: 0 1px 0 #2f6a3f, 0 2px 6px rgba(0,0,0,.08);
+}
+.card-record[data-blank="true"] .card { opacity: .5; }
+.ab-blank { color: var(--muted); font-style: italic; }
+
+.card-actions, .editor-actions {
+  display: flex; gap: .5rem; align-items: center; flex-wrap: wrap;
+  margin-top: .7rem;
+}
+
+.btn {
+  font: inherit; font-size: .78rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  padding: .35rem .8rem; border-radius: 3px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn-primary { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.btn-quiet { color: var(--muted); }
+
+/* The editor replaces the card face in place, so the eye stays where the
+   work is rather than jumping to a panel elsewhere. */
+.editor-shell { display: none; }
+.card-record.editing .card,
+.card-record.editing .card-actions { display: none; }
+.card-record.editing .editor-shell { display: block; }
+
+.editor-label {
+  display: block;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--accent); margin-bottom: .35rem;
+}
+.tei-editor {
+  width: 100%; min-height: 20rem; resize: vertical;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .74rem; line-height: 1.55;
+  padding: .8rem; border-radius: 2px;
+  border: 1px solid var(--accent);
+  background: var(--card-stock); color: var(--card-ink);
+  tab-size: 2;
+}
+.tei-editor:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.hint { font-size: .7rem; color: var(--muted); }
+
+/* --- progress + toolbar ------------------------------------------------ */
+
+.progress { display: flex; align-items: center; gap: .75rem; margin: .9rem 0 .6rem; }
+.prog-track {
+  flex: 1; height: .45rem; border-radius: 999px;
+  background: var(--rule); overflow: hidden;
+}
+.prog-bar {
+  height: 100%; width: 0; background: var(--accent);
+  transition: width .25s ease;
+}
+.prog-text {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .72rem; color: var(--muted); white-space: nowrap;
+}
+.toolbar { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%) translateY(1rem);
+  background: var(--ink); color: var(--paper);
+  padding: .6rem 1.1rem; border-radius: 4px;
+  font-size: .8rem; opacity: 0; pointer-events: none;
+  transition: opacity .2s, transform .2s; z-index: 50;
+  max-width: 90vw;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.err { background: var(--flag); }
+
+/* The embedded TEI payloads are data, not content. [hidden] alone loses to the
+   .tei-editor display rule, so pin it. */
+textarea[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header class="site-head">
+  <h1>Catalog of the Berg Collection: sample cards</h1>
+  <p class="source">1 pages &#183; 4 cards
+     (4 with content) &#183; seeded from OCR, corrected by hand</p>
+  <div class="progress">
+    <div class="prog-track"><div class="prog-bar" id="prog-bar"></div></div>
+    <span id="prog-text" class="prog-text">0 verified</span>
+  </div>
+  <div class="toolbar">
+    <button data-act="export" class="btn btn-primary">Export corrected TEI</button>
+    <button data-act="reset" class="btn btn-quiet">Discard local corrections</button>
+  </div>
+  <p class="legend">
+    Every card starts as uncorrected OCR (~75&#8211;82% accurate), marked
+    <span class="unclear">uncertain</span> and attributed to <code>#ocr</code>.
+    Correct one and it is re-attributed to <code>#human</code> and marked
+    verified. Work is stored in this browser until you export.
+  </p>
+</header>
+<main>
+
+<article class="card-record" id="v4-p0431-r0c2"
+         data-status="unverified" data-blank="false">
+  <div class="card-head">
+    <code class="card-id">v4-p0431-r0c2</code>
+    <div class="badges"><span class="badge badge-status badge-unverified">unverified</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-pane">
+      <div class="card"><div class="tracing tracing-top-right"> <abbr title="nota bene">n.b.</abbr><br/> <a class="ref ref-added-entry" href="#symons-julian">(Symons, J.)</a> </div><div class="ab ab-mainEntry"><span class="persName">Winters, Yvor</span></div><div class="ab ab-body indent1"> <abbr title="Typed Letter Signed">T. L. S.</abbr> to <span class="persName">Julian Symons</span>.<br/> <span class="placeName">Box 155, Los Altos, Calif.</span>,<br/> <time class="date" datetime="1938-11-15">Nov. 15, <span class="unclear" data-cert="medium" title="uncertain reading &#183; confidence: medium &#183; read by: vlm &#183; ink-bleed">1938</span></time>. <span class="measure">1 p.</span> </div><div class="ab ab-note"> With <abbr title="Typed Letter">T. L.</abbr> (carbon) reply dated <time class="date" datetime="1938-12-21">Dec. 21, <span class="unclear" data-cert="medium" title="uncertain reading &#183; confidence: medium &#183; read by: vlm &#183; ink-bleed">1938</span></time>.<br/> <span class="measure">1 p.</span> </div><div class="rod-hole" aria-hidden="true"></div></div>
+      <div class="editor-shell">
+        <label class="editor-label" for="ed-v4-p0431-r0c2">TEI source for this card</label>
+        <textarea class="tei-editor" id="ed-v4-p0431-r0c2" spellcheck="false"></textarea>
+        <div class="editor-actions">
+          <button data-act="save" class="btn btn-primary">Save &amp; mark verified</button>
+          <button data-act="cancel" class="btn btn-quiet">Cancel</button>
+          <span class="hint">Ctrl/&#8984;+Enter to save</span>
+        </div>
+      </div>
+      
+      <div class="card-actions">
+        <button data-act="edit" class="btn">Edit TEI</button>
+        <button data-act="revert" class="btn btn-quiet">Revert to OCR</button>
+      </div>
+      
+    </div>
+    <div class="facs-pane">
+      <img class="card-facs" src="images/v4-p0431-r0c2.png" alt="Scan of card v4-p0431-r0c2" loading="lazy"/>
+      <div class="pane-label">source scan</div>
+    </div>
+  </div>
+  
+  <details class="description">
+    <summary>Structured description</summary>
+    <dl class="desc-grid"><div class="desc-row"><dt>Repository</dt><dd>New York Public Library &#183; Henry W. and Albert A. Berg Collection</dd></div><div class="desc-row"><dt>Contents</dt><dd><ul class="ms-items"><li> Winters, Yvor Typed letter signed to Julian Symons Written from Box 155, Los Altos, California. </li><li> Typed letter (carbon), reply Accompanies the letter above. </li></ul></dd></div><div class="desc-row"><dt>Physical</dt><dd>2 items, 1 p. each</dd></div></dl>
+  </details>
+  <!-- Hidden textareas, not <script> blocks: a script element's textContent is
+       NOT entity-decoded, so escaped markup would reach the editor literally.
+       The parser decodes textarea content, and .value returns clean XML. -->
+  <textarea class="tei-source" hidden aria-hidden="true">&lt;div xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; type=&quot;card&quot; xml:id=&quot;v4-p0431-r0c2&quot; facs=&quot;#zone-r0c2&quot; n=&quot;r0c2&quot; corresp=&quot;#desc-r0c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;fw type=&quot;tracing&quot; place=&quot;top-right&quot;&gt; &lt;abbr expan=&quot;nota bene&quot;&gt;n.b.&lt;/abbr&gt;&lt;lb/&gt; &lt;ref type=&quot;added-entry&quot; target=&quot;#symons-julian&quot;&gt;(Symons, J.)&lt;/ref&gt; &lt;/fw&gt; &lt;ab type=&quot;mainEntry&quot;&gt;&lt;persName ref=&quot;#winters-yvor&quot;&gt;Winters, Yvor&lt;/persName&gt;&lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent1&quot;&gt; &lt;abbr expan=&quot;Typed Letter Signed&quot;&gt;T. L. S.&lt;/abbr&gt; to &lt;persName ref=&quot;#symons-julian&quot;&gt;Julian Symons&lt;/persName&gt;.&lt;lb/&gt; &lt;placeName&gt;Box 155, Los Altos, Calif.&lt;/placeName&gt;,&lt;lb/&gt; &lt;date when=&quot;1938-11-15&quot;&gt;Nov. 15, &lt;unclear reason=&quot;ink-bleed&quot; cert=&quot;medium&quot; resp=&quot;#vlm&quot;&gt;1938&lt;/unclear&gt;&lt;/date&gt;. &lt;measure type=&quot;extent&quot;&gt;1 p.&lt;/measure&gt; &lt;/ab&gt; &lt;ab type=&quot;note&quot;&gt; With &lt;abbr expan=&quot;Typed Letter&quot;&gt;T. L.&lt;/abbr&gt; (carbon) reply dated &lt;date when=&quot;1938-12-21&quot;&gt;Dec. 21, &lt;unclear reason=&quot;ink-bleed&quot; cert=&quot;medium&quot; resp=&quot;#vlm&quot;&gt;1938&lt;/unclear&gt;&lt;/date&gt;.&lt;lb/&gt; &lt;measure type=&quot;extent&quot;&gt;1 p.&lt;/measure&gt; &lt;/ab&gt; &lt;/div&gt; &lt;listBibl type=&quot;description&quot;&gt; &lt;msDesc xml:id=&quot;desc-r0c2&quot;&gt; &lt;msIdentifier&gt; &lt;institution&gt;New York Public Library&lt;/institution&gt; &lt;collection&gt;Henry W. and Albert A. Berg Collection&lt;/collection&gt; &lt;/msIdentifier&gt; &lt;msContents&gt; &lt;msItem&gt; &lt;author ref=&quot;#winters-yvor&quot;&gt;Winters, Yvor&lt;/author&gt; &lt;title type=&quot;supplied&quot;&gt;Typed letter signed to Julian Symons&lt;/title&gt; &lt;note&gt;Written from Box 155, Los Altos, California.&lt;/note&gt; &lt;/msItem&gt; &lt;msItem n=&quot;enclosure&quot;&gt; &lt;title type=&quot;supplied&quot;&gt;Typed letter (carbon), reply&lt;/title&gt; &lt;note&gt;Accompanies the letter above.&lt;/note&gt; &lt;/msItem&gt; &lt;/msContents&gt; &lt;physDesc&gt;&lt;extent&gt;2 items, 1 p. each&lt;/extent&gt;&lt;/physDesc&gt; &lt;/msDesc&gt; &lt;/listBibl&gt; &lt;/div&gt;</textarea>
+  <textarea class="tei-original" hidden aria-hidden="true">&lt;div xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; type=&quot;card&quot; xml:id=&quot;v4-p0431-r0c2&quot; facs=&quot;#zone-r0c2&quot; n=&quot;r0c2&quot; corresp=&quot;#desc-r0c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;fw type=&quot;tracing&quot; place=&quot;top-right&quot;&gt; &lt;abbr expan=&quot;nota bene&quot;&gt;n.b.&lt;/abbr&gt;&lt;lb/&gt; &lt;ref type=&quot;added-entry&quot; target=&quot;#symons-julian&quot;&gt;(Symons, J.)&lt;/ref&gt; &lt;/fw&gt; &lt;ab type=&quot;mainEntry&quot;&gt;&lt;persName ref=&quot;#winters-yvor&quot;&gt;Winters, Yvor&lt;/persName&gt;&lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent1&quot;&gt; &lt;abbr expan=&quot;Typed Letter Signed&quot;&gt;T. L. S.&lt;/abbr&gt; to &lt;persName ref=&quot;#symons-julian&quot;&gt;Julian Symons&lt;/persName&gt;.&lt;lb/&gt; &lt;placeName&gt;Box 155, Los Altos, Calif.&lt;/placeName&gt;,&lt;lb/&gt; &lt;date when=&quot;1938-11-15&quot;&gt;Nov. 15, &lt;unclear reason=&quot;ink-bleed&quot; cert=&quot;medium&quot; resp=&quot;#vlm&quot;&gt;1938&lt;/unclear&gt;&lt;/date&gt;. &lt;measure type=&quot;extent&quot;&gt;1 p.&lt;/measure&gt; &lt;/ab&gt; &lt;ab type=&quot;note&quot;&gt; With &lt;abbr expan=&quot;Typed Letter&quot;&gt;T. L.&lt;/abbr&gt; (carbon) reply dated &lt;date when=&quot;1938-12-21&quot;&gt;Dec. 21, &lt;unclear reason=&quot;ink-bleed&quot; cert=&quot;medium&quot; resp=&quot;#vlm&quot;&gt;1938&lt;/unclear&gt;&lt;/date&gt;.&lt;lb/&gt; &lt;measure type=&quot;extent&quot;&gt;1 p.&lt;/measure&gt; &lt;/ab&gt; &lt;/div&gt; &lt;listBibl type=&quot;description&quot;&gt; &lt;msDesc xml:id=&quot;desc-r0c2&quot;&gt; &lt;msIdentifier&gt; &lt;institution&gt;New York Public Library&lt;/institution&gt; &lt;collection&gt;Henry W. and Albert A. Berg Collection&lt;/collection&gt; &lt;/msIdentifier&gt; &lt;msContents&gt; &lt;msItem&gt; &lt;author ref=&quot;#winters-yvor&quot;&gt;Winters, Yvor&lt;/author&gt; &lt;title type=&quot;supplied&quot;&gt;Typed letter signed to Julian Symons&lt;/title&gt; &lt;note&gt;Written from Box 155, Los Altos, California.&lt;/note&gt; &lt;/msItem&gt; &lt;msItem n=&quot;enclosure&quot;&gt; &lt;title type=&quot;supplied&quot;&gt;Typed letter (carbon), reply&lt;/title&gt; &lt;note&gt;Accompanies the letter above.&lt;/note&gt; &lt;/msItem&gt; &lt;/msContents&gt; &lt;physDesc&gt;&lt;extent&gt;2 items, 1 p. each&lt;/extent&gt;&lt;/physDesc&gt; &lt;/msDesc&gt; &lt;/listBibl&gt; &lt;/div&gt;</textarea>
+</article>
+
+<article class="card-record" id="v4-p0431-r1c2"
+         data-status="unverified" data-blank="false">
+  <div class="card-head">
+    <code class="card-id">v4-p0431-r1c2</code>
+    <div class="badges"><span class="badge badge-status badge-unverified">unverified</span><span class="badge badge-xref">cross-reference</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-pane">
+      <div class="card"><div class="ab ab-mainEntry"> <span class="persName">Wintle, E. D.</span>, <span class="term">pseud.</span> <span class="space">&#160;&#160;&#160;&#160;</span> <a class="ref ref-see" href="#kipling-rudyard">See: Kipling, Rudyard.</a> </div><div class="rod-hole" aria-hidden="true"></div></div>
+      <div class="editor-shell">
+        <label class="editor-label" for="ed-v4-p0431-r1c2">TEI source for this card</label>
+        <textarea class="tei-editor" id="ed-v4-p0431-r1c2" spellcheck="false"></textarea>
+        <div class="editor-actions">
+          <button data-act="save" class="btn btn-primary">Save &amp; mark verified</button>
+          <button data-act="cancel" class="btn btn-quiet">Cancel</button>
+          <span class="hint">Ctrl/&#8984;+Enter to save</span>
+        </div>
+      </div>
+      
+      <div class="card-actions">
+        <button data-act="edit" class="btn">Edit TEI</button>
+        <button data-act="revert" class="btn btn-quiet">Revert to OCR</button>
+      </div>
+      <div class="card-note"><span class="note-label">cardFunction</span>Cross-reference only. Directs the reader from the pseudonym to the authority heading; describes no held item.</div>
+    </div>
+    <div class="facs-pane">
+      <img class="card-facs" src="images/v4-p0431-r1c2.png" alt="Scan of card v4-p0431-r1c2" loading="lazy"/>
+      <div class="pane-label">source scan</div>
+    </div>
+  </div>
+  
+  <!-- Hidden textareas, not <script> blocks: a script element's textContent is
+       NOT entity-decoded, so escaped markup would reach the editor literally.
+       The parser decodes textarea content, and .value returns clean XML. -->
+  <textarea class="tei-source" hidden aria-hidden="true">&lt;div xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; type=&quot;card&quot; xml:id=&quot;v4-p0431-r1c2&quot; facs=&quot;#zone-r1c2&quot; n=&quot;r1c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;ab type=&quot;mainEntry&quot;&gt; &lt;persName&gt;Wintle, E. D.&lt;/persName&gt;, &lt;term type=&quot;role&quot;&gt;pseud.&lt;/term&gt; &lt;space quantity=&quot;4&quot; unit=&quot;chars&quot;/&gt; &lt;ref type=&quot;see&quot; target=&quot;#kipling-rudyard&quot;&gt;See: Kipling, Rudyard.&lt;/ref&gt; &lt;/ab&gt; &lt;/div&gt; &lt;note type=&quot;cardFunction&quot;&gt;Cross-reference only. Directs the reader from the pseudonym to the authority heading; describes no held item.&lt;/note&gt; &lt;/div&gt;</textarea>
+  <textarea class="tei-original" hidden aria-hidden="true">&lt;div xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; type=&quot;card&quot; xml:id=&quot;v4-p0431-r1c2&quot; facs=&quot;#zone-r1c2&quot; n=&quot;r1c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;ab type=&quot;mainEntry&quot;&gt; &lt;persName&gt;Wintle, E. D.&lt;/persName&gt;, &lt;term type=&quot;role&quot;&gt;pseud.&lt;/term&gt; &lt;space quantity=&quot;4&quot; unit=&quot;chars&quot;/&gt; &lt;ref type=&quot;see&quot; target=&quot;#kipling-rudyard&quot;&gt;See: Kipling, Rudyard.&lt;/ref&gt; &lt;/ab&gt; &lt;/div&gt; &lt;note type=&quot;cardFunction&quot;&gt;Cross-reference only. Directs the reader from the pseudonym to the authority heading; describes no held item.&lt;/note&gt; &lt;/div&gt;</textarea>
+</article>
+
+<article class="card-record" id="v4-p0431-r3c1"
+         data-status="unverified" data-blank="false">
+  <div class="card-head">
+    <code class="card-id">v4-p0431-r3c1</code>
+    <div class="badges"><span class="badge badge-status badge-unverified">unverified</span><span class="badge badge-cont">continuation</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-pane">
+      <div class="card"><div class="ab ab-mainEntry"> <span class="persName">Winter, Wm.</span> <span class="space">&#160;&#160;</span>Miscellaneous ms. material (card 2) </div><div class="ab ab-body indent2"> letters mentioning <span class="persName">O&#x27;Brien</span> and 13 letters<br/> about O&#x27;Brien to <span class="persName">William Winter</span> from various<br/> correspondents. <span class="measure">3 folders</span>. </div><div class="ab ab-holdings"><abbr class="code">B.</abbr></div><div class="rod-hole" aria-hidden="true"></div></div>
+      <div class="editor-shell">
+        <label class="editor-label" for="ed-v4-p0431-r3c1">TEI source for this card</label>
+        <textarea class="tei-editor" id="ed-v4-p0431-r3c1" spellcheck="false"></textarea>
+        <div class="editor-actions">
+          <button data-act="save" class="btn btn-primary">Save &amp; mark verified</button>
+          <button data-act="cancel" class="btn btn-quiet">Cancel</button>
+          <span class="hint">Ctrl/&#8984;+Enter to save</span>
+        </div>
+      </div>
+      
+      <div class="card-actions">
+        <button data-act="edit" class="btn">Edit TEI</button>
+        <button data-act="revert" class="btn btn-quiet">Revert to OCR</button>
+      </div>
+      <div class="card-note"><span class="note-label">continuation</span>Continues the entry begun on the card at r2c1, whose text breaks off at &quot;receipted bills; contemporary&quot;.</div>
+    </div>
+    <div class="facs-pane">
+      <img class="card-facs" src="images/v4-p0431-r3c1.png" alt="Scan of card v4-p0431-r3c1" loading="lazy"/>
+      <div class="pane-label">source scan</div>
+    </div>
+  </div>
+  
+  <!-- Hidden textareas, not <script> blocks: a script element's textContent is
+       NOT entity-decoded, so escaped markup would reach the editor literally.
+       The parser decodes textarea content, and .value returns clean XML. -->
+  <textarea class="tei-source" hidden aria-hidden="true">&lt;div xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; type=&quot;card&quot; xml:id=&quot;v4-p0431-r3c1&quot; facs=&quot;#zone-r3c1&quot; n=&quot;r3c1&quot; prev=&quot;#v4-p0431-r2c1&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;ab type=&quot;mainEntry&quot;&gt; &lt;persName ref=&quot;#winter-william&quot;&gt;Winter, Wm.&lt;/persName&gt; &lt;space quantity=&quot;2&quot; unit=&quot;chars&quot;/&gt;Miscellaneous ms. material &lt;fw type=&quot;cardNumber&quot; place=&quot;top-right&quot;&gt;(card 2)&lt;/fw&gt; &lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent2&quot;&gt; letters mentioning &lt;persName ref=&quot;#obrien-fitzjames&quot;&gt;O&#x27;Brien&lt;/persName&gt; and 13 letters&lt;lb/&gt; about O&#x27;Brien to &lt;persName ref=&quot;#winter-william&quot;&gt;William Winter&lt;/persName&gt; from various&lt;lb/&gt; correspondents. &lt;measure type=&quot;extent&quot;&gt;3 folders&lt;/measure&gt;. &lt;/ab&gt; &lt;ab type=&quot;holdings&quot;&gt;&lt;abbr type=&quot;holdingsCode&quot;&gt;B.&lt;/abbr&gt;&lt;/ab&gt; &lt;/div&gt; &lt;note type=&quot;continuation&quot;&gt;Continues the entry begun on the card at r2c1, whose text breaks off at &quot;receipted bills; contemporary&quot;.&lt;/note&gt; &lt;/div&gt;</textarea>
+  <textarea class="tei-original" hidden aria-hidden="true">&lt;div xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; type=&quot;card&quot; xml:id=&quot;v4-p0431-r3c1&quot; facs=&quot;#zone-r3c1&quot; n=&quot;r3c1&quot; prev=&quot;#v4-p0431-r2c1&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;ab type=&quot;mainEntry&quot;&gt; &lt;persName ref=&quot;#winter-william&quot;&gt;Winter, Wm.&lt;/persName&gt; &lt;space quantity=&quot;2&quot; unit=&quot;chars&quot;/&gt;Miscellaneous ms. material &lt;fw type=&quot;cardNumber&quot; place=&quot;top-right&quot;&gt;(card 2)&lt;/fw&gt; &lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent2&quot;&gt; letters mentioning &lt;persName ref=&quot;#obrien-fitzjames&quot;&gt;O&#x27;Brien&lt;/persName&gt; and 13 letters&lt;lb/&gt; about O&#x27;Brien to &lt;persName ref=&quot;#winter-william&quot;&gt;William Winter&lt;/persName&gt; from various&lt;lb/&gt; correspondents. &lt;measure type=&quot;extent&quot;&gt;3 folders&lt;/measure&gt;. &lt;/ab&gt; &lt;ab type=&quot;holdings&quot;&gt;&lt;abbr type=&quot;holdingsCode&quot;&gt;B.&lt;/abbr&gt;&lt;/ab&gt; &lt;/div&gt; &lt;note type=&quot;continuation&quot;&gt;Continues the entry begun on the card at r2c1, whose text breaks off at &quot;receipted bills; contemporary&quot;.&lt;/note&gt; &lt;/div&gt;</textarea>
+</article>
+
+<article class="card-record" id="v4-p0431-r6c2"
+         data-status="unverified" data-blank="false">
+  <div class="card-head">
+    <code class="card-id">v4-p0431-r6c2</code>
+    <div class="badges"><span class="badge badge-status badge-unverified">unverified</span></div>
+  </div>
+  <div class="card-body">
+    <div class="card-pane">
+      <div class="card"><div class="tracing tracing-top-right"> <abbr class="code">B</abbr><br/> <a class="ref ref-added-entry" href="#byron">(Byron)</a> </div><div class="ab ab-mainEntry"><span class="persName">Wise, Thomas James</span>.</div><div class="ab ab-body indent1"> A bibliography of the writings of George<br/> Gordon Noel, baron Byron. London: Printed for<br/> private circulation only [by the Dunedin press,<br/> Edinburgh] 1932-33. 2 v. 26cm. 1st ed. </div><div class="ab ab-note"> <span class="measure">150 copies printed.</span><br/> Two copies:<br/> 1. Presentation copy, inscribed, from the author<br/> to <span class="persName">W. T. H. Howe</span>.<br/> 2. <abbr class="code">H.</abbr> </div><div class="rod-hole" aria-hidden="true"></div></div>
+      <div class="editor-shell">
+        <label class="editor-label" for="ed-v4-p0431-r6c2">TEI source for this card</label>
+        <textarea class="tei-editor" id="ed-v4-p0431-r6c2" spellcheck="false"></textarea>
+        <div class="editor-actions">
+          <button data-act="save" class="btn btn-primary">Save &amp; mark verified</button>
+          <button data-act="cancel" class="btn btn-quiet">Cancel</button>
+          <span class="hint">Ctrl/&#8984;+Enter to save</span>
+        </div>
+      </div>
+      
+      <div class="card-actions">
+        <button data-act="edit" class="btn">Edit TEI</button>
+        <button data-act="revert" class="btn btn-quiet">Revert to OCR</button>
+      </div>
+      
+    </div>
+    <div class="facs-pane">
+      <img class="card-facs" src="images/v4-p0431-r6c2.png" alt="Scan of card v4-p0431-r6c2" loading="lazy"/>
+      <div class="pane-label">source scan</div>
+    </div>
+  </div>
+  
+  <details class="description">
+    <summary>Structured description</summary>
+    <dl class="desc-grid"><div class="desc-row"><dt>Author</dt><dd>Wise, Thomas James</dd></div><div class="desc-row"><dt>Title</dt><dd>A bibliography of the writings of George Gordon Noel, baron Byron</dd></div><div class="desc-row"><dt>Edition</dt><dd>1st ed.</dd></div><div class="desc-row"><dt>Imprint</dt><dd>London &#183; Printed for private circulation only [by the Dunedin press, Edinburgh] &#183; <time class="date" datetime="1932">1932-33</time></dd></div><div class="desc-row"><dt>Extent</dt><dd><span class="measure">2 v.</span> 26</dd></div><div class="desc-row"><dt>Edition size</dt><dd>150 copies printed.</dd></div><div class="desc-row"><dt>Copies</dt><dd>  Presentation copy, inscribed, from the author to <span class="persName">W. T. H. Howe</span>. <abbr class="code">H.</abbr>  </dd></div></dl>
+  </details>
+  <!-- Hidden textareas, not <script> blocks: a script element's textContent is
+       NOT entity-decoded, so escaped markup would reach the editor literally.
+       The parser decodes textarea content, and .value returns clean XML. -->
+  <textarea class="tei-source" hidden aria-hidden="true">&lt;div xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; type=&quot;card&quot; xml:id=&quot;v4-p0431-r6c2&quot; facs=&quot;#zone-r6c2&quot; n=&quot;r6c2&quot; corresp=&quot;#desc-r6c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;fw type=&quot;tracing&quot; place=&quot;top-right&quot;&gt; &lt;abbr&gt;B&lt;/abbr&gt;&lt;lb/&gt; &lt;ref type=&quot;added-entry&quot; target=&quot;#byron&quot;&gt;(Byron)&lt;/ref&gt; &lt;/fw&gt; &lt;ab type=&quot;mainEntry&quot;&gt;&lt;persName ref=&quot;#wise-tj&quot;&gt;Wise, Thomas James&lt;/persName&gt;.&lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent1&quot;&gt; A bibliography of the writings of George&lt;lb/&gt; Gordon Noel, baron Byron. London: Printed for&lt;lb/&gt; private circulation only [by the Dunedin press,&lt;lb/&gt; Edinburgh] 1932-33. 2 v. 26cm. 1st ed. &lt;/ab&gt; &lt;ab type=&quot;note&quot;&gt; &lt;measure type=&quot;editionSize&quot;&gt;150 copies printed.&lt;/measure&gt;&lt;lb/&gt; Two copies:&lt;lb/&gt; 1. Presentation copy, inscribed, from the author&lt;lb/&gt; to &lt;persName ref=&quot;#howe-wth&quot;&gt;W. T. H. Howe&lt;/persName&gt;.&lt;lb/&gt; 2. &lt;abbr type=&quot;holdingsCode&quot;&gt;H.&lt;/abbr&gt; &lt;/ab&gt; &lt;/div&gt; &lt;listBibl type=&quot;description&quot;&gt; &lt;biblStruct xml:id=&quot;desc-r6c2&quot;&gt; &lt;monogr&gt; &lt;author ref=&quot;#wise-tj&quot;&gt;Wise, Thomas James&lt;/author&gt; &lt;title level=&quot;m&quot;&gt;A bibliography of the writings of George Gordon Noel, baron Byron&lt;/title&gt; &lt;edition&gt;1st ed.&lt;/edition&gt; &lt;imprint&gt; &lt;pubPlace&gt;London&lt;/pubPlace&gt; &lt;publisher&gt;Printed for private circulation only [by the Dunedin press, Edinburgh]&lt;/publisher&gt; &lt;date from=&quot;1932&quot; to=&quot;1933&quot;&gt;1932-33&lt;/date&gt; &lt;/imprint&gt; &lt;extent&gt;&lt;measure unit=&quot;volume&quot; quantity=&quot;2&quot;&gt;2 v.&lt;/measure&gt; &lt;dimensions unit=&quot;cm&quot;&gt;&lt;height&gt;26&lt;/height&gt;&lt;/dimensions&gt;&lt;/extent&gt; &lt;/monogr&gt; &lt;note type=&quot;editionSize&quot; n=&quot;150&quot;&gt;150 copies printed.&lt;/note&gt; &lt;note type=&quot;copies&quot; n=&quot;2&quot;&gt; &lt;list type=&quot;copies&quot;&gt; &lt;item n=&quot;1&quot;&gt;Presentation copy, inscribed, from the author to &lt;persName ref=&quot;#howe-wth&quot;&gt;W. T. H. Howe&lt;/persName&gt;.&lt;/item&gt; &lt;item n=&quot;2&quot;&gt;&lt;abbr type=&quot;holdingsCode&quot;&gt;H.&lt;/abbr&gt;&lt;/item&gt; &lt;/list&gt; &lt;/note&gt; &lt;/biblStruct&gt; &lt;/listBibl&gt; &lt;/div&gt;</textarea>
+  <textarea class="tei-original" hidden aria-hidden="true">&lt;div xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; type=&quot;card&quot; xml:id=&quot;v4-p0431-r6c2&quot; facs=&quot;#zone-r6c2&quot; n=&quot;r6c2&quot; corresp=&quot;#desc-r6c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;fw type=&quot;tracing&quot; place=&quot;top-right&quot;&gt; &lt;abbr&gt;B&lt;/abbr&gt;&lt;lb/&gt; &lt;ref type=&quot;added-entry&quot; target=&quot;#byron&quot;&gt;(Byron)&lt;/ref&gt; &lt;/fw&gt; &lt;ab type=&quot;mainEntry&quot;&gt;&lt;persName ref=&quot;#wise-tj&quot;&gt;Wise, Thomas James&lt;/persName&gt;.&lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent1&quot;&gt; A bibliography of the writings of George&lt;lb/&gt; Gordon Noel, baron Byron. London: Printed for&lt;lb/&gt; private circulation only [by the Dunedin press,&lt;lb/&gt; Edinburgh] 1932-33. 2 v. 26cm. 1st ed. &lt;/ab&gt; &lt;ab type=&quot;note&quot;&gt; &lt;measure type=&quot;editionSize&quot;&gt;150 copies printed.&lt;/measure&gt;&lt;lb/&gt; Two copies:&lt;lb/&gt; 1. Presentation copy, inscribed, from the author&lt;lb/&gt; to &lt;persName ref=&quot;#howe-wth&quot;&gt;W. T. H. Howe&lt;/persName&gt;.&lt;lb/&gt; 2. &lt;abbr type=&quot;holdingsCode&quot;&gt;H.&lt;/abbr&gt; &lt;/ab&gt; &lt;/div&gt; &lt;listBibl type=&quot;description&quot;&gt; &lt;biblStruct xml:id=&quot;desc-r6c2&quot;&gt; &lt;monogr&gt; &lt;author ref=&quot;#wise-tj&quot;&gt;Wise, Thomas James&lt;/author&gt; &lt;title level=&quot;m&quot;&gt;A bibliography of the writings of George Gordon Noel, baron Byron&lt;/title&gt; &lt;edition&gt;1st ed.&lt;/edition&gt; &lt;imprint&gt; &lt;pubPlace&gt;London&lt;/pubPlace&gt; &lt;publisher&gt;Printed for private circulation only [by the Dunedin press, Edinburgh]&lt;/publisher&gt; &lt;date from=&quot;1932&quot; to=&quot;1933&quot;&gt;1932-33&lt;/date&gt; &lt;/imprint&gt; &lt;extent&gt;&lt;measure unit=&quot;volume&quot; quantity=&quot;2&quot;&gt;2 v.&lt;/measure&gt; &lt;dimensions unit=&quot;cm&quot;&gt;&lt;height&gt;26&lt;/height&gt;&lt;/dimensions&gt;&lt;/extent&gt; &lt;/monogr&gt; &lt;note type=&quot;editionSize&quot; n=&quot;150&quot;&gt;150 copies printed.&lt;/note&gt; &lt;note type=&quot;copies&quot; n=&quot;2&quot;&gt; &lt;list type=&quot;copies&quot;&gt; &lt;item n=&quot;1&quot;&gt;Presentation copy, inscribed, from the author to &lt;persName ref=&quot;#howe-wth&quot;&gt;W. T. H. Howe&lt;/persName&gt;.&lt;/item&gt; &lt;item n=&quot;2&quot;&gt;&lt;abbr type=&quot;holdingsCode&quot;&gt;H.&lt;/abbr&gt;&lt;/item&gt; &lt;/list&gt; &lt;/note&gt; &lt;/biblStruct&gt; &lt;/listBibl&gt; &lt;/div&gt;</textarea>
+</article>
+</main>
+<div id="toast" class="toast"></div>
+<textarea id="tei-doc" hidden aria-hidden="true">&lt;!-- Worked example: four cards from bergv4.pdf p.431 (printed p.418), hand-encoded from human readings of 400 DPI crops. This file is the *design target* for the automated pipeline — it exercises every structure the encoder must handle: r0c2 manuscript letter, tracing mark, uncertain date r1c2 bare &quot;See:&quot; cross-reference, no bibliographic content r3c1 continuation card (&quot;card 2&quot;), body opens mid-sentence r6c2 printed book, two enumerated copies with distinct provenance Editorial conventions are declared in &lt;encodingDesc&gt; and every uncertain reading carries @resp so a model reading is never mistaken for a human one. --&gt; &lt;TEI xmlns=&quot;http://www.tei-c.org/ns/1.0&quot; xml:id=&quot;berg-demo&quot;&gt; &lt;teiHeader&gt; &lt;fileDesc&gt; &lt;titleStmt&gt; &lt;title&gt;Catalog of the Berg Collection: sample cards&lt;/title&gt; &lt;respStmt xml:id=&quot;vlm&quot;&gt; &lt;resp&gt;Automated transcription from card image&lt;/resp&gt; &lt;name&gt;Claude (vision model)&lt;/name&gt; &lt;/respStmt&gt; &lt;respStmt xml:id=&quot;human&quot;&gt; &lt;resp&gt;Human transcription and review&lt;/resp&gt; &lt;name&gt;Project editor&lt;/name&gt; &lt;/respStmt&gt; &lt;/titleStmt&gt; &lt;publicationStmt&gt; &lt;availability status=&quot;free&quot;&gt; &lt;p&gt;Source scans are public domain (CC0), digitized by Google from the New York Public Library and delivered via HathiTrust.&lt;/p&gt; &lt;/availability&gt; &lt;/publicationStmt&gt; &lt;sourceDesc&gt; &lt;bibl&gt; &lt;title&gt;Catalog of the Berg Collection of English and American Literature, New York Public Library&lt;/title&gt; &lt;biblScope unit=&quot;volume&quot;&gt;4&lt;/biblScope&gt; &lt;biblScope unit=&quot;page&quot;&gt;418&lt;/biblScope&gt; &lt;note&gt;PDF page 431. HathiTrust &lt;ident type=&quot;handle&quot;&gt;hdl.handle.net/2027/nyp.33433076812993&lt;/ident&gt;&lt;/note&gt; &lt;/bibl&gt; &lt;/sourceDesc&gt; &lt;/fileDesc&gt; &lt;encodingDesc&gt; &lt;projectDesc&gt; &lt;p&gt;Each catalog card is encoded as a &lt;gi&gt;div&lt;/gi&gt; of type &quot;card&quot; holding two parallel views: a &lt;gi&gt;div&lt;/gi&gt; of type &quot;transcription&quot; recording what is physically on the card, and a &lt;gi&gt;listBibl&lt;/gi&gt; of type &quot;description&quot; recording its bibliographic interpretation. Where the two disagree, the transcription is authoritative.&lt;/p&gt; &lt;/projectDesc&gt; &lt;editorialDecl&gt; &lt;correction&gt; &lt;p&gt;No silent correction. Readings inferred through ink loss are tagged &lt;gi&gt;unclear&lt;/gi&gt; with &lt;att&gt;cert&lt;/att&gt; and &lt;att&gt;resp&lt;/att&gt;. Text that cannot be read at all is tagged &lt;gi&gt;gap&lt;/gi&gt;, never guessed.&lt;/p&gt; &lt;/correction&gt; &lt;hyphenation eol=&quot;hard&quot;&gt; &lt;p&gt;Line breaks are recorded with &lt;gi&gt;lb&lt;/gi&gt;; original lineation is preserved because it carries the card&#x27;s visual structure.&lt;/p&gt; &lt;/hyphenation&gt; &lt;/editorialDecl&gt; &lt;charDecl&gt; &lt;glyph xml:id=&quot;rod-hole&quot;&gt; &lt;glyphName&gt;CARD ROD HOLE&lt;/glyphName&gt; &lt;desc&gt;The punched notch at the base of each card, for the catalog drawer rod. Present on every card; not encoded per-card.&lt;/desc&gt; &lt;/glyph&gt; &lt;/charDecl&gt; &lt;/encodingDesc&gt; &lt;profileDesc&gt; &lt;langUsage&gt;&lt;language ident=&quot;en&quot;&gt;English&lt;/language&gt;&lt;/langUsage&gt; &lt;/profileDesc&gt; &lt;/teiHeader&gt; &lt;!-- Card images and their coordinates on the source page (580 DPI, 5624x8324 px) --&gt; &lt;facsimile xml:id=&quot;facs-p431&quot;&gt; &lt;surface xml:id=&quot;surface-p431&quot; ulx=&quot;0&quot; uly=&quot;0&quot; lrx=&quot;5624&quot; lry=&quot;8324&quot;&gt; &lt;graphic url=&quot;images/page-431.png&quot;/&gt; &lt;zone xml:id=&quot;zone-r0c2&quot; ulx=&quot;3894&quot; uly=&quot;394&quot; lrx=&quot;5528&quot; lry=&quot;1424&quot;&gt; &lt;graphic url=&quot;images/v4-p0431-r0c2.png&quot;/&gt; &lt;/zone&gt; &lt;zone xml:id=&quot;zone-r1c2&quot; ulx=&quot;3894&quot; uly=&quot;1424&quot; lrx=&quot;5528&quot; lry=&quot;2446&quot;&gt; &lt;graphic url=&quot;images/v4-p0431-r1c2.png&quot;/&gt; &lt;/zone&gt; &lt;zone xml:id=&quot;zone-r3c1&quot; ulx=&quot;2237&quot; uly=&quot;3452&quot; lrx=&quot;3894&quot; lry=&quot;4474&quot;&gt; &lt;graphic url=&quot;images/v4-p0431-r3c1.png&quot;/&gt; &lt;/zone&gt; &lt;zone xml:id=&quot;zone-r6c2&quot; ulx=&quot;3894&quot; uly=&quot;6501&quot; lrx=&quot;5528&quot; lry=&quot;7507&quot;&gt; &lt;graphic url=&quot;images/v4-p0431-r6c2.png&quot;/&gt; &lt;/zone&gt; &lt;/surface&gt; &lt;/facsimile&gt; &lt;text&gt; &lt;body&gt; &lt;div type=&quot;page&quot; n=&quot;418&quot; xml:id=&quot;v4-p0431&quot;&gt; &lt;pb n=&quot;418&quot; facs=&quot;#surface-p431&quot;/&gt; &lt;!-- ================================================================ CARD 1 — manuscript letter with tracing and an uncertain date ================================================================ --&gt; &lt;div type=&quot;card&quot; xml:id=&quot;v4-p0431-r0c2&quot; facs=&quot;#zone-r0c2&quot; n=&quot;r0c2&quot; corresp=&quot;#desc-r0c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;fw type=&quot;tracing&quot; place=&quot;top-right&quot;&gt; &lt;abbr expan=&quot;nota bene&quot;&gt;n.b.&lt;/abbr&gt;&lt;lb/&gt; &lt;ref type=&quot;added-entry&quot; target=&quot;#symons-julian&quot;&gt;(Symons, J.)&lt;/ref&gt; &lt;/fw&gt; &lt;ab type=&quot;mainEntry&quot;&gt;&lt;persName ref=&quot;#winters-yvor&quot;&gt;Winters, Yvor&lt;/persName&gt;&lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent1&quot;&gt; &lt;abbr expan=&quot;Typed Letter Signed&quot;&gt;T. L. S.&lt;/abbr&gt; to &lt;persName ref=&quot;#symons-julian&quot;&gt;Julian Symons&lt;/persName&gt;.&lt;lb/&gt; &lt;placeName&gt;Box 155, Los Altos, Calif.&lt;/placeName&gt;,&lt;lb/&gt; &lt;date when=&quot;1938-11-15&quot;&gt;Nov. 15, &lt;unclear reason=&quot;ink-bleed&quot; cert=&quot;medium&quot; resp=&quot;#vlm&quot;&gt;1938&lt;/unclear&gt;&lt;/date&gt;. &lt;measure type=&quot;extent&quot;&gt;1 p.&lt;/measure&gt; &lt;/ab&gt; &lt;ab type=&quot;note&quot;&gt; With &lt;abbr expan=&quot;Typed Letter&quot;&gt;T. L.&lt;/abbr&gt; (carbon) reply dated &lt;date when=&quot;1938-12-21&quot;&gt;Dec. 21, &lt;unclear reason=&quot;ink-bleed&quot; cert=&quot;medium&quot; resp=&quot;#vlm&quot;&gt;1938&lt;/unclear&gt;&lt;/date&gt;.&lt;lb/&gt; &lt;measure type=&quot;extent&quot;&gt;1 p.&lt;/measure&gt; &lt;/ab&gt; &lt;/div&gt; &lt;listBibl type=&quot;description&quot;&gt; &lt;msDesc xml:id=&quot;desc-r0c2&quot;&gt; &lt;msIdentifier&gt; &lt;institution&gt;New York Public Library&lt;/institution&gt; &lt;collection&gt;Henry W. and Albert A. Berg Collection&lt;/collection&gt; &lt;/msIdentifier&gt; &lt;msContents&gt; &lt;msItem&gt; &lt;author ref=&quot;#winters-yvor&quot;&gt;Winters, Yvor&lt;/author&gt; &lt;title type=&quot;supplied&quot;&gt;Typed letter signed to Julian Symons&lt;/title&gt; &lt;note&gt;Written from Box 155, Los Altos, California.&lt;/note&gt; &lt;/msItem&gt; &lt;msItem n=&quot;enclosure&quot;&gt; &lt;title type=&quot;supplied&quot;&gt;Typed letter (carbon), reply&lt;/title&gt; &lt;note&gt;Accompanies the letter above.&lt;/note&gt; &lt;/msItem&gt; &lt;/msContents&gt; &lt;physDesc&gt;&lt;extent&gt;2 items, 1 p. each&lt;/extent&gt;&lt;/physDesc&gt; &lt;/msDesc&gt; &lt;/listBibl&gt; &lt;/div&gt; &lt;!-- ================================================================ CARD 2 — pure cross-reference; no item, no holdings ================================================================ --&gt; &lt;div type=&quot;card&quot; xml:id=&quot;v4-p0431-r1c2&quot; facs=&quot;#zone-r1c2&quot; n=&quot;r1c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;ab type=&quot;mainEntry&quot;&gt; &lt;persName&gt;Wintle, E. D.&lt;/persName&gt;, &lt;term type=&quot;role&quot;&gt;pseud.&lt;/term&gt; &lt;space quantity=&quot;4&quot; unit=&quot;chars&quot;/&gt; &lt;ref type=&quot;see&quot; target=&quot;#kipling-rudyard&quot;&gt;See: Kipling, Rudyard.&lt;/ref&gt; &lt;/ab&gt; &lt;/div&gt; &lt;note type=&quot;cardFunction&quot;&gt;Cross-reference only. Directs the reader from the pseudonym to the authority heading; describes no held item.&lt;/note&gt; &lt;/div&gt; &lt;!-- ================================================================ CARD 3 — continuation. Body opens mid-sentence; the preceding card ends &quot;...receipted bills; contemporary&quot; at r2c1. ================================================================ --&gt; &lt;div type=&quot;card&quot; xml:id=&quot;v4-p0431-r3c1&quot; facs=&quot;#zone-r3c1&quot; n=&quot;r3c1&quot; prev=&quot;#v4-p0431-r2c1&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;ab type=&quot;mainEntry&quot;&gt; &lt;persName ref=&quot;#winter-william&quot;&gt;Winter, Wm.&lt;/persName&gt; &lt;space quantity=&quot;2&quot; unit=&quot;chars&quot;/&gt;Miscellaneous ms. material &lt;fw type=&quot;cardNumber&quot; place=&quot;top-right&quot;&gt;(card 2)&lt;/fw&gt; &lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent2&quot;&gt; letters mentioning &lt;persName ref=&quot;#obrien-fitzjames&quot;&gt;O&#x27;Brien&lt;/persName&gt; and 13 letters&lt;lb/&gt; about O&#x27;Brien to &lt;persName ref=&quot;#winter-william&quot;&gt;William Winter&lt;/persName&gt; from various&lt;lb/&gt; correspondents. &lt;measure type=&quot;extent&quot;&gt;3 folders&lt;/measure&gt;. &lt;/ab&gt; &lt;ab type=&quot;holdings&quot;&gt;&lt;abbr type=&quot;holdingsCode&quot;&gt;B.&lt;/abbr&gt;&lt;/ab&gt; &lt;/div&gt; &lt;note type=&quot;continuation&quot;&gt;Continues the entry begun on the card at r2c1, whose text breaks off at &quot;receipted bills; contemporary&quot;.&lt;/note&gt; &lt;/div&gt; &lt;!-- ================================================================ CARD 4 — printed book, two copies with distinct provenance ================================================================ --&gt; &lt;div type=&quot;card&quot; xml:id=&quot;v4-p0431-r6c2&quot; facs=&quot;#zone-r6c2&quot; n=&quot;r6c2&quot; corresp=&quot;#desc-r6c2&quot;&gt; &lt;div type=&quot;transcription&quot;&gt; &lt;fw type=&quot;tracing&quot; place=&quot;top-right&quot;&gt; &lt;abbr&gt;B&lt;/abbr&gt;&lt;lb/&gt; &lt;ref type=&quot;added-entry&quot; target=&quot;#byron&quot;&gt;(Byron)&lt;/ref&gt; &lt;/fw&gt; &lt;ab type=&quot;mainEntry&quot;&gt;&lt;persName ref=&quot;#wise-tj&quot;&gt;Wise, Thomas James&lt;/persName&gt;.&lt;/ab&gt; &lt;ab type=&quot;body&quot; rend=&quot;indent1&quot;&gt; A bibliography of the writings of George&lt;lb/&gt; Gordon Noel, baron Byron. London: Printed for&lt;lb/&gt; private circulation only [by the Dunedin press,&lt;lb/&gt; Edinburgh] 1932-33. 2 v. 26cm. 1st ed. &lt;/ab&gt; &lt;ab type=&quot;note&quot;&gt; &lt;measure type=&quot;editionSize&quot;&gt;150 copies printed.&lt;/measure&gt;&lt;lb/&gt; Two copies:&lt;lb/&gt; 1. Presentation copy, inscribed, from the author&lt;lb/&gt; to &lt;persName ref=&quot;#howe-wth&quot;&gt;W. T. H. Howe&lt;/persName&gt;.&lt;lb/&gt; 2. &lt;abbr type=&quot;holdingsCode&quot;&gt;H.&lt;/abbr&gt; &lt;/ab&gt; &lt;/div&gt; &lt;listBibl type=&quot;description&quot;&gt; &lt;biblStruct xml:id=&quot;desc-r6c2&quot;&gt; &lt;monogr&gt; &lt;author ref=&quot;#wise-tj&quot;&gt;Wise, Thomas James&lt;/author&gt; &lt;title level=&quot;m&quot;&gt;A bibliography of the writings of George Gordon Noel, baron Byron&lt;/title&gt; &lt;edition&gt;1st ed.&lt;/edition&gt; &lt;imprint&gt; &lt;pubPlace&gt;London&lt;/pubPlace&gt; &lt;publisher&gt;Printed for private circulation only [by the Dunedin press, Edinburgh]&lt;/publisher&gt; &lt;date from=&quot;1932&quot; to=&quot;1933&quot;&gt;1932-33&lt;/date&gt; &lt;/imprint&gt; &lt;extent&gt;&lt;measure unit=&quot;volume&quot; quantity=&quot;2&quot;&gt;2 v.&lt;/measure&gt; &lt;dimensions unit=&quot;cm&quot;&gt;&lt;height&gt;26&lt;/height&gt;&lt;/dimensions&gt;&lt;/extent&gt; &lt;/monogr&gt; &lt;note type=&quot;editionSize&quot; n=&quot;150&quot;&gt;150 copies printed.&lt;/note&gt; &lt;note type=&quot;copies&quot; n=&quot;2&quot;&gt; &lt;list type=&quot;copies&quot;&gt; &lt;item n=&quot;1&quot;&gt;Presentation copy, inscribed, from the author to &lt;persName ref=&quot;#howe-wth&quot;&gt;W. T. H. Howe&lt;/persName&gt;.&lt;/item&gt; &lt;item n=&quot;2&quot;&gt;&lt;abbr type=&quot;holdingsCode&quot;&gt;H.&lt;/abbr&gt;&lt;/item&gt; &lt;/list&gt; &lt;/note&gt; &lt;/biblStruct&gt; &lt;/listBibl&gt; &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/text&gt; &lt;/TEI&gt; </textarea>
+<script>/* Card correction front end.
+ *
+ * Each card ships with its own TEI source embedded in the page. Clicking "Edit
+ * TEI" swaps the rendered card face for a textarea holding that source; saving
+ * re-renders it live, flips the card's provenance from #ocr to #human, and
+ * persists to localStorage so a session's work survives a reload.
+ *
+ * The provenance rewrite is the point of the whole exercise: a corrected card
+ * is not merely "better text", it is text with a different and recorded
+ * authority. Export writes that back into the TEI.
+ */
+(function () {
+  "use strict";
+
+  var STORE = "bergcat.corrections.v1";
+  var parser = new DOMParser();
+  var serializer = new XMLSerializer();
+  var TEI = "http://www.tei-c.org/ns/1.0";
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(STORE)) || {}; }
+    catch (e) { return {}; }
+  }
+  function save(state) {
+    try { localStorage.setItem(STORE, JSON.stringify(state)); }
+    catch (e) { flash("Could not save locally: " + e.message, true); }
+  }
+
+  var corrections = load();
+
+  // --- TEI -> HTML (mirrors render.py for the subset the generator emits) ---
+
+  function esc(s) {
+    return (s || "").replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function inline(node) {
+    var out = "";
+    for (var i = 0; i < node.childNodes.length; i++) {
+      var n = node.childNodes[i];
+      if (n.nodeType === 3) { out += esc(n.nodeValue.replace(/\s+/g, " ")); continue; }
+      if (n.nodeType !== 1) continue;
+      var name = n.localName, kids = inline(n);
+      if (name === "lb") out += "<br/>";
+      else if (name === "gap")
+        out += '<span class="gap" title="illegible">[&#8230;]</span>';
+      else if (name === "unclear") {
+        var cert = n.getAttribute("cert") || "unknown";
+        var resp = (n.getAttribute("resp") || "").replace("#", "") || "unattributed";
+        out += '<span class="unclear" data-cert="' + esc(cert) +
+               '" title="uncertain &#183; confidence: ' + esc(cert) +
+               " &#183; read by: " + esc(resp) + '">' + kids + "</span>";
+      }
+      else if (name === "abbr") {
+        var ex = n.getAttribute("expan");
+        out += ex ? '<abbr title="' + esc(ex) + '">' + kids + "</abbr>"
+                  : '<abbr class="code">' + kids + "</abbr>";
+      }
+      else if (name === "hi")
+        out += '<span class="hi hi-' + esc(n.getAttribute("rend") || "") + '">' + kids + "</span>";
+      else if (name === "ref")
+        out += '<a class="ref ref-' + esc(n.getAttribute("type") || "") +
+               '" href="' + esc(n.getAttribute("target") || "#") + '">' + kids + "</a>";
+      else if (name === "persName" || name === "placeName" || name === "measure" || name === "term")
+        out += '<span class="' + name + '">' + kids + "</span>";
+      else if (name === "date")
+        out += '<time class="date">' + kids + "</time>";
+      else if (name === "space") {
+        var q = parseInt(n.getAttribute("quantity") || "1", 10);
+        out += '<span class="space">' + new Array(q + 1).join("&#160;") + "</span>";
+      }
+      else out += kids;
+    }
+    return out;
+  }
+
+  function renderFace(cardEl) {
+    var trans = cardEl.getElementsByTagNameNS(TEI, "div")[0];
+    var html = "";
+    if (!trans) {
+      var blank = cardEl.getElementsByTagNameNS(TEI, "note")[0];
+      return '<div class="ab ab-blank">' + (blank ? inline(blank) : "empty") + "</div>";
+    }
+    for (var i = 0; i < trans.children.length; i++) {
+      var b = trans.children[i], name = b.localName;
+      if (name === "fw") {
+        html = '<div class="tracing tracing-top-right">' + inline(b) + "</div>" + html;
+      } else if (name === "ab") {
+        var cls = "ab ab-" + (b.getAttribute("type") || "");
+        var rend = b.getAttribute("rend");
+        if (rend) cls += " " + rend;
+        html += '<div class="' + cls + '">' + inline(b) + "</div>";
+      }
+    }
+    return html;
+  }
+
+  // --- correction bookkeeping ---------------------------------------------
+
+  /* A human reading supersedes the machine's. Retag the transcription's
+     responsibility and unwrap the <unclear> hedges the OCR pass added — they
+     recorded the machine's doubt, and it is no longer the machine's reading. */
+  function markHuman(cardEl) {
+    cardEl.setAttribute("status", "verified");
+    var trans = cardEl.getElementsByTagNameNS(TEI, "div")[0];
+    if (trans) trans.setAttribute("resp", "#human");
+
+    var unclears = cardEl.getElementsByTagNameNS(TEI, "unclear");
+    while (unclears.length) {
+      var u = unclears[0];
+      if ((u.getAttribute("resp") || "") === "#human") break; // human-flagged: keep
+      var parent = u.parentNode;
+      while (u.firstChild) parent.insertBefore(u.firstChild, u);
+      parent.removeChild(u);
+    }
+    var when = new Date().toISOString().slice(0, 10);
+    cardEl.setAttribute("change", when);
+    return cardEl;
+  }
+
+  function parseCard(xmlText) {
+    var doc = parser.parseFromString(xmlText, "application/xml");
+    var err = doc.getElementsByTagName("parsererror")[0];
+    if (err) throw new Error(err.textContent.split("\n")[0]);
+    var el = doc.documentElement;
+    if (!el || el.localName !== "div")
+      throw new Error("Expected a single <div type=\"card\"> element.");
+    return el;
+  }
+
+  // --- UI ------------------------------------------------------------------
+
+  function flash(msg, isErr) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.className = "toast show" + (isErr ? " err" : "");
+    clearTimeout(flash._t);
+    flash._t = setTimeout(function () { el.className = "toast"; }, 3200);
+  }
+
+  function updateProgress() {
+    var total = document.querySelectorAll(".card-record[data-blank=false]").length;
+    var done = document.querySelectorAll('.card-record[data-status="verified"]').length;
+    var pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById("prog-text").textContent =
+      done + " of " + total + " verified (" + pct + "%)";
+    document.getElementById("prog-bar").style.width = pct + "%";
+  }
+
+  function applyStatus(rec, status) {
+    rec.setAttribute("data-status", status);
+    var badge = rec.querySelector(".badge-status");
+    if (badge) {
+      badge.textContent = status;
+      badge.className = "badge badge-status badge-" + status;
+    }
+  }
+
+  // Sources live in hidden <textarea>s so the HTML parser decodes entities for
+  // us; .value is clean XML with no manual unescaping.
+  function setSource(rec, xmlText) {
+    rec.querySelector(".tei-source").value = xmlText;
+  }
+  function getSource(rec) {
+    return rec.querySelector(".tei-source").value;
+  }
+
+  function openEditor(rec) {
+    rec.classList.add("editing");
+    var ta = rec.querySelector(".tei-editor");
+    ta.value = getSource(rec);
+    ta.focus();
+  }
+  function closeEditor(rec) { rec.classList.remove("editing"); }
+
+  function commit(rec) {
+    var ta = rec.querySelector(".tei-editor");
+    var cardEl;
+    try {
+      cardEl = parseCard(ta.value);
+    } catch (e) {
+      flash("Invalid XML — not saved. " + e.message, true);
+      return;
+    }
+    markHuman(cardEl);
+    var xmlText = serializer.serializeToString(cardEl);
+
+    setSource(rec, xmlText);
+    rec.querySelector(".card").innerHTML =
+      renderFace(cardEl) + '<div class="rod-hole" aria-hidden="true"></div>';
+    applyStatus(rec, "verified");
+    closeEditor(rec);
+
+    corrections[rec.id] = xmlText;
+    save(corrections);
+    updateProgress();
+    flash("Saved. Card marked verified, attributed to #human.");
+  }
+
+  function revert(rec) {
+    var orig = rec.querySelector(".tei-original").value;
+    setSource(rec, orig);
+    try {
+      var el = parseCard(orig);
+      rec.querySelector(".card").innerHTML =
+        renderFace(el) + '<div class="rod-hole" aria-hidden="true"></div>';
+      applyStatus(rec, el.getAttribute("status") || "unverified");
+    } catch (e) { /* original is generator output; assume valid */ }
+    delete corrections[rec.id];
+    save(corrections);
+    closeEditor(rec);
+    updateProgress();
+    flash("Reverted to the OCR reading.");
+  }
+
+  // --- boot ----------------------------------------------------------------
+
+  function restore() {
+    Object.keys(corrections).forEach(function (id) {
+      var rec = document.getElementById(id);
+      if (!rec) return;
+      var xmlText = corrections[id];
+      try {
+        var el = parseCard(xmlText);
+        setSource(rec, xmlText);
+        rec.querySelector(".card").innerHTML =
+          renderFace(el) + '<div class="rod-hole" aria-hidden="true"></div>';
+        applyStatus(rec, "verified");
+      } catch (e) { /* drop unparseable stored state rather than break the page */ }
+    });
+  }
+
+  function exportTEI() {
+    var full = document.getElementById("tei-doc").value;
+    var doc = parser.parseFromString(full, "application/xml");
+    var n = 0;
+    Object.keys(corrections).forEach(function (id) {
+      var target = doc.querySelector('[*|id="' + id + '"]') ||
+                   doc.getElementById(id);
+      if (!target) {
+        var all = doc.getElementsByTagNameNS(TEI, "div");
+        for (var i = 0; i < all.length; i++) {
+          if (all[i].getAttribute("xml:id") === id) { target = all[i]; break; }
+        }
+      }
+      if (!target) return;
+      var repl = parser.parseFromString(corrections[id], "application/xml").documentElement;
+      target.parentNode.replaceChild(doc.importNode(repl, true), target);
+      n++;
+    });
+    var out = serializer.serializeToString(doc);
+    var blob = new Blob([out], { type: "application/xml" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "berg-corrected.xml";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    flash("Exported TEI with " + n + " corrected card" + (n === 1 ? "" : "s") + ".");
+  }
+
+  document.addEventListener("click", function (ev) {
+    var btn = ev.target.closest("[data-act]");
+    if (!btn) return;
+    var act = btn.getAttribute("data-act");
+    if (act === "export") return exportTEI();
+    if (act === "reset") {
+      if (!confirm("Discard all local corrections?")) return;
+      corrections = {}; save(corrections); location.reload(); return;
+    }
+    var rec = btn.closest(".card-record");
+    if (!rec) return;
+    if (act === "edit") openEditor(rec);
+    else if (act === "cancel") closeEditor(rec);
+    else if (act === "save") commit(rec);
+    else if (act === "revert") revert(rec);
+  });
+
+  // Ctrl/Cmd+Enter saves from inside the textarea.
+  document.addEventListener("keydown", function (ev) {
+    if (!(ev.ctrlKey || ev.metaKey) || ev.key !== "Enter") return;
+    var ta = ev.target.closest(".tei-editor");
+    if (ta) commit(ta.closest(".card-record"));
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    restore();
+    updateProgress();
+  });
+})();
+</script>
+</body>
+</html>
